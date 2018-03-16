@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TrotroTV</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_field_report">FIELD REPORT</string>
+    <string name="title_survey">SURVEY</string>
+    <string name="title_sync">DATA SYNCHRONIZATION</string>
+</resources>

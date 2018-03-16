@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context="trotro.tv.trotrotv.SynchronizationFragment">
+
+    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:textAlignment="center"-->
+        <!--android:text="DATA SYNCHRONIZATION"/>-->
+
+    <Button
+        android:id="@+id/button_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="20dp"
+        android:layout_margin="24dp"
+        android:text="SYNC"/>
+
+    <EditText
+        android:id="@+id/output_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="40"
+        android:ems="10"
+        android:inputType="textMultiLine"/>
+
+</LinearLayout>
