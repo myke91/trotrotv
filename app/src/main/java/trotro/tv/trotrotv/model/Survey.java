@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.Date;
+import java.util.List;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
@@ -34,12 +35,26 @@ public class Survey {
         ContentValues values = new ContentValues();
         values.put(Constants.SURVEY_KEY_BRAND_NAME, survey.getBrandName());
         values.put(Constants.SURVEY_KEY_QUESTION, survey.getQuestion());
-        values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
         values.put(Constants.SURVEY_KEY_TIMESTAMP, new Date().getTime());
+        values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
 
         // Inserting Row
-        db.insert(Constants.TABLE_STATION, null, values);
+        db.insert(Constants.TABLE_SURVEY, null, values);
         db.close(); // Closing database connection
+    }
+
+    public void saveSurveys(List<Survey> survey) {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+
+//        ContentValues values = new ContentValues();
+//        values.put(Constants.SURVEY_KEY_BRAND_NAME, survey.getBrandName());
+//        values.put(Constants.SURVEY_KEY_QUESTION, survey.getQuestion());
+//        values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
+//        values.put(Constants.SURVEY_KEY_TIMESTAMP, new Date().getTime());
+//
+//        // Inserting Row
+//        db.insert(Constants.TABLE_STATION, null, values);
+//        db.close(); // Closing database connection
     }
 
     public void editSurvey(int id) {

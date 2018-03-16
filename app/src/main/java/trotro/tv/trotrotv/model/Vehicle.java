@@ -1,7 +1,12 @@
 package trotro.tv.trotrotv.model;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
+import java.util.Date;
+
+import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
 
 /**
@@ -17,9 +22,34 @@ public class Vehicle {
 
     private DatabaseHandler mDbHandler;
 
-    public Vehicle(Context context){
+    public Vehicle(Context context) {
         mDbHandler = new DatabaseHandler(context);
     }
+
+    public void saveVehicle(Vehicle vehicle) {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Constants.VEHICLE_KEY_STATION_NAME, vehicle.getStationName());
+        values.put(Constants.VEHICLE_KEY_VEHICLE_NUMBER, vehicle.getVehicleNumber());
+
+        // Inserting Row
+        db.insert(Constants.TABLE_VEHICLE, null, values);
+        db.close(); // Closing database connection
+    }
+
+    public void editVehicle(int id) {
+    }
+
+    public void deleteVehicle(int id) {
+    }
+
+    public void getVehicle(int id) {
+    }
+
+    public void getAllVehicles() {
+    }
+
 
     public String getId() {
         return id;
@@ -45,18 +75,4 @@ public class Vehicle {
         this.stationName = stationName;
     }
 
-    public void saveVehicle() {
-    }
-
-    public void editVehicle(int id) {
-    }
-
-    public void deleteVehicle(int id) {
-    }
-
-    public void getVehicle(int id) {
-    }
-
-    public void getAllVehicles() {
-    }
 }

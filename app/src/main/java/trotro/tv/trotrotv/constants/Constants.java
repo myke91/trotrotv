@@ -5,6 +5,7 @@ package trotro.tv.trotrotv.constants;
  */
 
 public class Constants {
+    public static final String TAG = "trotro.tv.trotrotv";
     // All Static variables
     // Database Version
     public static final int DATABASE_VERSION = 1;
@@ -22,6 +23,8 @@ public class Constants {
     public static final String TABLE_SURVEY = "survey";
     // Vehicle table name
     public static final String TABLE_VEHICLE = "vehicle";
+    // Question table name
+    public static final String TABLE_QUESTION = "question";
 
 
     public static final String BRAND_KEY_ID = "id";
@@ -53,4 +56,8 @@ public class Constants {
     public static final String VEHICLE_KEY_ID = "id";
     public static final String VEHICLE_KEY_VEHICLE_NUMBER = "vehicle_number";
     public static final String VEHICLE_KEY_STATION_NAME = "station_name";
+
+    public static final String QUESTION_KEY_ID = "id";
+    public static final String QUESTION_KEY_QUESTION= "question";
+    public static final String QUESTION_KEY_TYPE = "type";
 }

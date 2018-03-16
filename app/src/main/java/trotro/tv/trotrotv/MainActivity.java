@@ -1,5 +1,6 @@
 package trotro.tv.trotrotv;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import trotro.tv.trotrotv.constants.Constants;
+import trotro.tv.trotrotv.db.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Initialize SQLite database
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
+        SQLiteDatabase db = this.openOrCreateDatabase(Constants.DATABASE_NAME, MODE_PRIVATE, null);
+        dbHandler.onCreate(db);
     }
 
 }
