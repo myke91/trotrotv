@@ -99,7 +99,7 @@ public class Report {
         if (cursor.moveToFirst()) {
             do {
                 Report report = new Report();
-                report.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
+                report.setId(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_ID)));
                 report.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_VEHICLE_NUMBER)));
                 report.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_QUESTION)));
                 report.setAnswer(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_ANSWER)));

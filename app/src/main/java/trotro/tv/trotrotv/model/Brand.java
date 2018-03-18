@@ -72,6 +72,11 @@ public class Brand {
     public void getBrand(int id) {
     }
 
+    public void clearData() {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        db.execSQL("DELETE FROM "+Constants.TABLE_BRAND);
+        db.close();
+    }
     public List<Brand> getAllBrands() {
         List<Brand> brands = new ArrayList<>();
 

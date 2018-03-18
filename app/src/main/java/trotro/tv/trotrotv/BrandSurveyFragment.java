@@ -4,6 +4,7 @@ package trotro.tv.trotrotv;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +33,17 @@ public class BrandSurveyFragment extends Fragment {
     ListView listBrands;
     TextView mBrandName;
 
+    Brand mBrand;
+    Question mQuestion;
+
     LinearLayout formQuestion;
 
-    public BrandSurveyFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBrand = new Brand(getContext());
+        mQuestion = new Question(getContext());
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,22 +139,7 @@ public class BrandSurveyFragment extends Fragment {
     };
 
     private List<Brand> getBrands() {
-        List<Brand> list = new ArrayList();
-
-        Brand brand = new Brand(getContext());
-        brand.setLocation("STARBITE");
-        brand.setBrandName("STARBITE");
-        list.add(brand);
-
-        brand = new Brand(getContext());
-        brand.setLocation("GOLDEN TULIP");
-        brand.setBrandName("GOLDEN TULIP");
-        list.add(brand);
-
-        brand = new Brand(getContext());
-        brand.setLocation("SHELL");
-        brand.setBrandName("SHELL");
-        list.add(brand);
+        List<Brand> list = mBrand.getAllBrands();
 
         BrandListAdapter adapter = new BrandListAdapter(getActivity(), list);
         listBrands.setAdapter(adapter);
@@ -158,22 +149,7 @@ public class BrandSurveyFragment extends Fragment {
     }
 
     private List<Question> getQuestions() {
-        List<Question> list = new ArrayList<Question>();
-        Question que = new Question(getContext());
-        que.setQuestion("Is the screen working?");
-        list.add(que);
-
-        que = new Question(getContext());
-        que.setQuestion("Does it start with key?");
-        list.add(que);
-
-        que = new Question(getContext());
-        que.setQuestion("Is driver happy?");
-        list.add(que);
-
-
-        return list;
-
+        return mQuestion.getQuestionsForSurvey();
     }
 
 }

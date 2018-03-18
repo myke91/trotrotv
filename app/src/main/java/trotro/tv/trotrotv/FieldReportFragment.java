@@ -39,6 +39,7 @@ public class FieldReportFragment extends Fragment {
 
     Station mStation;
     Question mQuestion;
+    Vehicle mVehicle;
 
     public FieldReportFragment() {
         // Required empty public constructor
@@ -49,7 +50,7 @@ public class FieldReportFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mStation = new Station(getContext());
         mQuestion = new Question(getContext());
-
+        mVehicle = new Vehicle(getContext());
     }
 
     @Override
@@ -71,69 +72,18 @@ public class FieldReportFragment extends Fragment {
         return layout;
     }
 
-    private List<Station> getStations() {
-//        List<Station> list = new ArrayList();
-//        Station station = new Station(getContext());
-//        station.setLocation("ACCRA");
-//        station.setBrandName("ACCRA");
-//        list.add(station);
-//
-//        station = new Station(getContext());
-//        station.setLocation("37");
-//        station.setBrandName("37");
-//        list.add(station);
-//
-//        station = new Station(getContext());
-//        station.setLocation("CIRCLE");
-//        station.setBrandName("CIRCLE");
-//        list.add(station);
-
+    private void getStations() {
         List<Station> list = mStation.getAllStations();
         StationListAdapter adapter = new StationListAdapter(getActivity(), list);
         listStations.setAdapter(adapter);
-
-        return list;
     }
 
     private List<Vehicle> getVehicles(Station station) {
-        List<Vehicle> list = new ArrayList();
-        Vehicle vehicle = new Vehicle(getContext());
-        vehicle.setStation(station.getStationName());
-        vehicle.setVehicle("GT 984 Y");
-        list.add(vehicle);
-
-        vehicle = new Vehicle(getContext());
-        vehicle.setStation(station.getStationName());
-        vehicle.setVehicle("GW 84 10");
-        list.add(vehicle);
-
-        vehicle = new Vehicle(getContext());
-        vehicle.setStation(station.getStationName());
-        vehicle.setVehicle("GT 487 12");
-        list.add(vehicle);
-
-
-        return list;
-
+        return mVehicle.getVehiclesForStation(station);
     }
 
     private List<Question> getQuestions() {
-        List<Question> list = new ArrayList();
-        Question que = new Question(getContext());
-        que.setQuestion("Is the screen working?");
-        list.add(que);
-
-        que = new Question(getContext());
-        que.setQuestion("Does it start with key?");
-        list.add(que);
-
-        que = new Question(getContext());
-        que.setQuestion("Is driver happy?");
-        list.add(que);
-
-
-        return list;
-
+        return mQuestion.getQuestionsForReport();
     }
 
     AdapterView.OnItemClickListener stationsItemClickListener = new AdapterView.OnItemClickListener() {
@@ -198,18 +148,18 @@ public class FieldReportFragment extends Fragment {
         public void onClick(View view) {
             for (int i = 0; i < formQuestion.getChildCount(); i++) {
 //                try {
-                    Report report = new Report(getContext());
-                    LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
-                    report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
-                    report.setAnswer(((ToggleButton) child.getChildAt(1)).getText().toString());
-                    report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
-                    report.saveReport(report);
+                Report report = new Report(getContext());
+                LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
+                report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
+                report.setAnswer(((ToggleButton) child.getChildAt(1)).getText().toString());
+                report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
+                report.saveReport(report);
 
-                    formQuestion.setVisibility(View.GONE);
-                    mButtonSave.setVisibility(View.GONE);
-                    mVehicleNumber.setVisibility(View.GONE);
+                formQuestion.setVisibility(View.GONE);
+                mButtonSave.setVisibility(View.GONE);
+                mVehicleNumber.setVisibility(View.GONE);
 
-                    listStations.setVisibility(View.VISIBLE);
+                listStations.setVisibility(View.VISIBLE);
 
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 //                    builder.setMessage("SAVE SUCCESSFUL");

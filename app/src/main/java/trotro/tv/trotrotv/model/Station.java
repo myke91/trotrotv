@@ -20,6 +20,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
 public class Station {
 
     private String id;
+    @JsonProperty("station_name")
     private String stationName;
     private String location;
     @JsonProperty("created_at")
@@ -59,6 +60,12 @@ public class Station {
         db.close();
     }
 
+    public void clearData() {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        db.execSQL("DELETE FROM "+Constants.TABLE_STATION);
+        db.close();
+    }
+
     public void getStation(int id) {
     }
 
@@ -75,9 +82,9 @@ public class Station {
         if (cursor.moveToFirst()) {
             do {
                 Station station = new Station();
-                station.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
-                station.setStationName(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_NAME)));
-                station.setLocation(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_LOCATION)));
+                station.setId(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_ID)));
+                station.setStationName(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_NAME)));
+                station.setLocation(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_LOCATION)));
 
                 stations.add(station);
             } while (cursor.moveToNext());

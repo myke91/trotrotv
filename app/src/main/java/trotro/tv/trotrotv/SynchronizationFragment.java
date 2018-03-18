@@ -19,9 +19,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.model.Brand;
@@ -50,6 +58,7 @@ public class SynchronizationFragment extends Fragment {
 
     final ObjectMapper mapper = new ObjectMapper();
     StringBuffer mProcessOutput;
+    JSONArray reportData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +70,19 @@ public class SynchronizationFragment extends Fragment {
         mReport = new Report(getContext());
         mSurvey = new Survey(getContext());
         mVehicle = new Vehicle(getContext());
+
+        ArrayList<Report> reports = (ArrayList<Report>) mReport.getAllReports();
+
+        try {
+            Gson gson = new Gson();
+            String listString = gson.toJson(
+                    reports,
+                    new TypeToken<ArrayList<Report>>() {
+                    }.getType());
+            reportData = new JSONArray(listString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -93,11 +115,11 @@ public class SynchronizationFragment extends Fragment {
             //clear output text box
             mTextProcessOutput.setText("");
 
-            mRequestQueue.add(stationsRequest);
-//            mRequestQueue.add(questionsRequest);
-//            mRequestQueue.add(vehiclesRequest);
 //            mRequestQueue.add(brandsRequest);
-//            mRequestQueue.add(reportsRequest);
+//            mRequestQueue.add(vehiclesRequest);
+//            mRequestQueue.add(stationsRequest);
+//            mRequestQueue.add(questionsRequest);
+            mRequestQueue.add(reportsRequest);
 //            mRequestQueue.add(surveysRequest);
             mProgressDialog.dismiss();
 
@@ -107,12 +129,13 @@ public class SynchronizationFragment extends Fragment {
     JsonArrayRequest stationsRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/stations", null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
+            mStation.clearData();
             for (int i = 0; i < response.length(); i++) {
                 try {
                     JSONObject json = response.getJSONObject(i);
                     Station station = mapper.readValue(json.toString(), Station.class);
                     mStation.saveStation(station);
-                    mProcessOutput.append("Downloaded and saved station ---> ").append(station.getStationName());
+                    mProcessOutput.append("Downloaded and saved station ---> ").append(station.getStationName()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -130,12 +153,13 @@ public class SynchronizationFragment extends Fragment {
     JsonArrayRequest questionsRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/questions", null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
+            mQuestion.clearData();
             for (int i = 0; i < response.length(); i++) {
                 try {
                     JSONObject json = response.getJSONObject(i);
                     Question question = mapper.readValue(json.toString(), Question.class);
                     mQuestion.saveQuestion(question);
-                    mProcessOutput.append("Downloaded and saved question ---> ").append(question.getQuestion());
+                    mProcessOutput.append("Downloaded and saved question ---> ").append(question.getQuestion()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,7 +169,7 @@ public class SynchronizationFragment extends Fragment {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            mProcessOutput.append("Error downloading questions ").append(error.getMessage());
+            mProcessOutput.append("Error downloading questions ").append(error.getMessage()).append("\n");
             mTextProcessOutput.setText(mProcessOutput.toString());
         }
     });
@@ -153,12 +177,13 @@ public class SynchronizationFragment extends Fragment {
     JsonArrayRequest vehiclesRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/vehicles", null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
+            mVehicle.clearData();
             for (int i = 0; i < response.length(); i++) {
                 try {
                     JSONObject json = response.getJSONObject(i);
                     Vehicle vehicle = mapper.readValue(json.toString(), Vehicle.class);
                     mVehicle.saveVehicle(vehicle);
-                    mProcessOutput.append("Downloaded and saved vehicle ---> ").append(vehicle.getVehicle());
+                    mProcessOutput.append("Downloaded and saved vehicle ---> ").append(vehicle.getVehicle()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -168,7 +193,7 @@ public class SynchronizationFragment extends Fragment {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            mProcessOutput.append("Error downloading vehicles ").append(error.getMessage());
+            mProcessOutput.append("Error downloading vehicles ").append(error.getMessage()).append("\n");
             mTextProcessOutput.setText(mProcessOutput.toString());
         }
     });
@@ -176,12 +201,13 @@ public class SynchronizationFragment extends Fragment {
     JsonArrayRequest brandsRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/brands", null, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
+            mBrand.clearData();
             for (int i = 0; i < response.length(); i++) {
                 try {
                     JSONObject json = response.getJSONObject(i);
                     Brand brand = mapper.readValue(json.toString(), Brand.class);
                     mBrand.saveBrand(brand);
-                    mProcessOutput.append("Downloaded and saved brand ---> ").append(brand.getBrandName());
+                    mProcessOutput.append("Downloaded and saved brand ---> ").append(brand.getBrandName()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,12 +217,12 @@ public class SynchronizationFragment extends Fragment {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            mProcessOutput.append("Error downloading brand ").append(error.getMessage());
+            mProcessOutput.append("Error downloading brand ").append(error.getMessage()).append("\n");
             mTextProcessOutput.setText(mProcessOutput.toString());
         }
     });
 
-    JsonArrayRequest reportsRequest = new JsonArrayRequest(Request.Method.POST, Constants.BACKEND_BASE_URL + "/api/report", null, new Response.Listener<JSONArray>() {
+    JsonArrayRequest reportsRequest = new JsonArrayRequest(Request.Method.POST, Constants.BACKEND_BASE_URL + "/api/report", reportData, new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
 
@@ -205,7 +231,7 @@ public class SynchronizationFragment extends Fragment {
                     JSONObject json = response.getJSONObject(i);
                     Report report = mapper.readValue(json.toString(), Report.class);
                     mReport.editReport(report);
-                    mProcessOutput.append("Uploaded report for ---> ").append(report.getVehicle());
+                    mProcessOutput.append("Uploaded report for ---> ").append(report.getVehicle()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -217,7 +243,7 @@ public class SynchronizationFragment extends Fragment {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            mProcessOutput.append("Error uploading reports ").append(error.getMessage());
+            mProcessOutput.append("Error uploading reports ").append(error.getMessage()).append("\n");
             mTextProcessOutput.setText(mProcessOutput.toString());
         }
     });
@@ -230,7 +256,7 @@ public class SynchronizationFragment extends Fragment {
                     JSONObject json = response.getJSONObject(i);
                     Survey survey = mapper.readValue(json.toString(), Survey.class);
                     mSurvey.editSurvey(survey);
-                    mProcessOutput.append("Uploaded survey for ---> ").append(survey.getBrand());
+                    mProcessOutput.append("Uploaded survey for ---> ").append(survey.getBrand()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -241,7 +267,7 @@ public class SynchronizationFragment extends Fragment {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            mProcessOutput.append("Error uploading surveys ").append(error.getMessage());
+            mProcessOutput.append("Error uploading surveys ").append(error.getMessage()).append("\n");
             mTextProcessOutput.setText(mProcessOutput.toString());
         }
     });

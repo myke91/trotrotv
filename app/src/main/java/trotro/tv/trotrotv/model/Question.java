@@ -63,6 +63,66 @@ public class Question {
     public void getQuestion(int id) {
     }
 
+    public void clearData() {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        db.execSQL("DELETE FROM " + Constants.TABLE_QUESTION);
+        db.close();
+    }
+
+    public List<Question> getQuestionsForReport() {
+        List<Question> questions = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'report'";
+
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Question question = new Question();
+                question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+
+                questions.add(question);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return notes list
+        return questions;
+    }
+
+    public List<Question> getQuestionsForSurvey() {
+        List<Question> questions = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'survey'";
+
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Question question = new Question();
+                question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+
+                questions.add(question);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return notes list
+        return questions;
+    }
+
     public List<Question> getAllQuestions() {
         List<Question> questions = new ArrayList<>();
 

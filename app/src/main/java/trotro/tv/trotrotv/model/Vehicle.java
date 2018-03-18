@@ -90,6 +90,38 @@ public class Vehicle {
         return vehicles;
     }
 
+    public List<Vehicle> getVehiclesForStation(Station station) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_VEHICLE + " WHERE " + Constants.VEHICLE_KEY_STATION_NAME + " = '" + station.getStationName() + "'";
+
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Vehicle vehicle = new Vehicle();
+                vehicle.setId(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_ID)));
+                vehicle.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_VEHICLE_NUMBER)));
+                vehicle.setStation(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_STATION_NAME)));
+
+                vehicles.add(vehicle);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return notes list
+        return vehicles;
+    }
+
+    public void clearData() {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        db.execSQL("DELETE FROM " + Constants.TABLE_VEHICLE);
+        db.close();
+    }
 
     public String getId() {
         return id;
