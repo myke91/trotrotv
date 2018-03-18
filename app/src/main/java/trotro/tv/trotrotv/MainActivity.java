@@ -60,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //Initialize SQLite database
-        DatabaseHandler dbHandler = new DatabaseHandler(this);
-        SQLiteDatabase db = this.openOrCreateDatabase(Constants.DATABASE_NAME, MODE_PRIVATE, null);
-        dbHandler.onCreate(db);
     }
 
 }

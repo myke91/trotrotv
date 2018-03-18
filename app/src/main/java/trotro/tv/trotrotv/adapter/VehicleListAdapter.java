@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 
 import trotro.tv.trotrotv.R;
-import trotro.tv.trotrotv.model.Station;
 import trotro.tv.trotrotv.model.Vehicle;
 
 /**
@@ -36,7 +35,7 @@ public class VehicleListAdapter extends ArrayAdapter<Vehicle> {
         View rowView = inflater.inflate(R.layout.list_stations, parent, false);
         Button button = (Button) rowView.findViewById(R.id.button);
 
-        button.setText(values.get(position).getVehicleNumber());
+        button.setText(values.get(position).getVehicle());
 
         return rowView;
     }

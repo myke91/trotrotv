@@ -6,14 +6,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,11 +22,9 @@ import java.util.List;
 
 import trotro.tv.trotrotv.adapter.StationListAdapter;
 import trotro.tv.trotrotv.adapter.VehicleListAdapter;
-import trotro.tv.trotrotv.model.Brand;
 import trotro.tv.trotrotv.model.Question;
 import trotro.tv.trotrotv.model.Report;
 import trotro.tv.trotrotv.model.Station;
-import trotro.tv.trotrotv.model.Survey;
 import trotro.tv.trotrotv.model.Vehicle;
 
 
@@ -76,22 +72,23 @@ public class FieldReportFragment extends Fragment {
     }
 
     private List<Station> getStations() {
-        List<Station> list = new ArrayList();
-        Station station = new Station(getContext());
-        station.setLocation("ACCRA");
-        station.setName("ACCRA");
-        list.add(station);
+//        List<Station> list = new ArrayList();
+//        Station station = new Station(getContext());
+//        station.setLocation("ACCRA");
+//        station.setBrandName("ACCRA");
+//        list.add(station);
+//
+//        station = new Station(getContext());
+//        station.setLocation("37");
+//        station.setBrandName("37");
+//        list.add(station);
+//
+//        station = new Station(getContext());
+//        station.setLocation("CIRCLE");
+//        station.setBrandName("CIRCLE");
+//        list.add(station);
 
-        station = new Station(getContext());
-        station.setLocation("37");
-        station.setName("37");
-        list.add(station);
-
-        station = new Station(getContext());
-        station.setLocation("CIRCLE");
-        station.setName("CIRCLE");
-        list.add(station);
-
+        List<Station> list = mStation.getAllStations();
         StationListAdapter adapter = new StationListAdapter(getActivity(), list);
         listStations.setAdapter(adapter);
 
@@ -101,18 +98,18 @@ public class FieldReportFragment extends Fragment {
     private List<Vehicle> getVehicles(Station station) {
         List<Vehicle> list = new ArrayList();
         Vehicle vehicle = new Vehicle(getContext());
-        vehicle.setStationName(station.getName());
-        vehicle.setVehicleNumber("GT 984 Y");
+        vehicle.setStation(station.getStationName());
+        vehicle.setVehicle("GT 984 Y");
         list.add(vehicle);
 
         vehicle = new Vehicle(getContext());
-        vehicle.setStationName(station.getName());
-        vehicle.setVehicleNumber("GW 84 10");
+        vehicle.setStation(station.getStationName());
+        vehicle.setVehicle("GW 84 10");
         list.add(vehicle);
 
         vehicle = new Vehicle(getContext());
-        vehicle.setStationName(station.getName());
-        vehicle.setVehicleNumber("GT 487 12");
+        vehicle.setStation(station.getStationName());
+        vehicle.setVehicle("GT 487 12");
         list.add(vehicle);
 
 
@@ -163,7 +160,7 @@ public class FieldReportFragment extends Fragment {
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             Vehicle vehicle = (Vehicle) listVehicles.getItemAtPosition(position);
             List<Question> list = getQuestions();
-            getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).edit().putString("currentVehicle", vehicle.getVehicleNumber()).apply();
+            getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).edit().putString("currentVehicle", vehicle.getVehicle()).apply();
             formQuestion.removeAllViews();
             for (Question question : list) {
                 mFormItemLayout = new LinearLayout(getContext());
@@ -205,7 +202,7 @@ public class FieldReportFragment extends Fragment {
                     LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
                     report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
                     report.setAnswer(((ToggleButton) child.getChildAt(1)).getText().toString());
-                    report.setVehicleNumber(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
+                    report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
                     report.saveReport(report);
 
                     formQuestion.setVisibility(View.GONE);

@@ -14,7 +14,6 @@ import java.util.Locale;
 
 import trotro.tv.trotrotv.R;
 import trotro.tv.trotrotv.model.Brand;
-import trotro.tv.trotrotv.model.Station;
 
 /**
  * Created by michael.dugah on 3/15/2018.
@@ -36,7 +35,7 @@ public class BrandListAdapter extends ArrayAdapter<Brand> {
         View rowView = inflater.inflate(R.layout.list_stations, parent, false);
         Button button = (Button) rowView.findViewById(R.id.button);
 
-        button.setText(values.get(position).getName());
+        button.setText(values.get(position).getBrandName());
 
         return rowView;
     }

@@ -2,9 +2,13 @@ package trotro.tv.trotrotv.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
@@ -16,32 +20,75 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
 public class Station {
 
     private String id;
-    private String name;
+    private String stationName;
     private String location;
+    @JsonProperty("created_at")
+    private String createdAt;
+    @JsonProperty("updated_at")
+    private String updateAt;
 
     private DatabaseHandler mDbHandler;
 
-    public Station(Context context){
+    public Station(Context context) {
         mDbHandler = new DatabaseHandler(context);
     }
 
 
+    public Station() {
+    }
 
-    public void saveStation(Station station){
+    public void saveStation(Station station) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Constants.STATION_KEY_NAME, station.getName());
+        values.put(Constants.STATION_KEY_NAME, station.getStationName());
         values.put(Constants.STATION_KEY_LOCATION, station.getLocation());
 
         // Inserting Row
         db.insert(Constants.TABLE_STATION, null, values);
         db.close(); // Closing database connection
     }
-    public void editStation(int id){}
-    public void deleteStation(int id){}
-    public void getStation(int id){}
-    public void getAllStations(){}
+
+    public void editStation(int id) {
+    }
+
+    public void deleteStation(Station station) {
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        db.delete(Constants.TABLE_STATION, Constants.STATION_KEY_ID + " = ?",
+                new String[]{String.valueOf(station.getId())});
+        db.close();
+    }
+
+    public void getStation(int id) {
+    }
+
+    public List<Station> getAllStations() {
+        List<Station> stations = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_STATION;
+
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Station station = new Station();
+                station.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
+                station.setStationName(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_NAME)));
+                station.setLocation(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_LOCATION)));
+
+                stations.add(station);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return notes list
+        return stations;
+    }
 
     public String getId() {
         return id;
@@ -51,12 +98,12 @@ public class Station {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getStationName() {
+        return stationName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
     }
 
     public String getLocation() {
@@ -65,5 +112,21 @@ public class Station {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(String updateAt) {
+        this.updateAt = updateAt;
     }
 }

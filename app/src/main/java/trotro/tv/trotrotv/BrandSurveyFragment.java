@@ -5,15 +5,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,13 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trotro.tv.trotrotv.adapter.BrandListAdapter;
-import trotro.tv.trotrotv.adapter.VehicleListAdapter;
-import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.model.Brand;
 import trotro.tv.trotrotv.model.Question;
-import trotro.tv.trotrotv.model.Station;
 import trotro.tv.trotrotv.model.Survey;
-import trotro.tv.trotrotv.model.Vehicle;
 
 
 /**
@@ -70,7 +63,7 @@ public class BrandSurveyFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             Brand brand = (Brand) listBrands.getItemAtPosition(position);
-            getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).edit().putString("currentBrand", brand.getName()).apply();
+            getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).edit().putString("currentBrand", brand.getBrandName()).apply();
             List<Question> list = getQuestions();
             formQuestion.removeAllViews();
             for (Question question : list) {
@@ -114,7 +107,7 @@ public class BrandSurveyFragment extends Fragment {
                 LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
                 survey.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
                 survey.setAnswer(((ToggleButton) child.getChildAt(1)).getText().toString());
-                survey.setBrandName(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentBrand", ""));
+                survey.setBrand(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentBrand", ""));
                 survey.saveSurvey(survey);
 
                 formQuestion.setVisibility(View.GONE);
@@ -144,17 +137,17 @@ public class BrandSurveyFragment extends Fragment {
 
         Brand brand = new Brand(getContext());
         brand.setLocation("STARBITE");
-        brand.setName("STARBITE");
+        brand.setBrandName("STARBITE");
         list.add(brand);
 
         brand = new Brand(getContext());
         brand.setLocation("GOLDEN TULIP");
-        brand.setName("GOLDEN TULIP");
+        brand.setBrandName("GOLDEN TULIP");
         list.add(brand);
 
         brand = new Brand(getContext());
         brand.setLocation("SHELL");
-        brand.setName("SHELL");
+        brand.setBrandName("SHELL");
         list.add(brand);
 
         BrandListAdapter adapter = new BrandListAdapter(getActivity(), list);

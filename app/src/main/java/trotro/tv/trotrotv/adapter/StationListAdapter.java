@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,7 @@ public class StationListAdapter extends ArrayAdapter<Station> {
         View rowView = inflater.inflate(R.layout.list_stations, parent, false);
         Button button = (Button) rowView.findViewById(R.id.button);
 
-        button.setText(values.get(position).getName());
+        button.setText(values.get(position).getStationName());
 
         return rowView;
     }
