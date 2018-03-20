@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
  * Created by michael.dugah on 3/15/2018.
  */
 
-public class Brand {
+public class Brand extends JSONObject {
 
     DatabaseHandler mDbHandler;
 

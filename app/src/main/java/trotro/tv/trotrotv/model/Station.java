@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
@@ -17,7 +20,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
  * Created by michael.dugah on 3/15/2018.
  */
 
-public class Station {
+public class Station extends JSONObject {
 
     private String id;
     @JsonProperty("station_name")
@@ -37,6 +40,8 @@ public class Station {
 
     public Station() {
     }
+
+
 
     public void saveStation(Station station) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();

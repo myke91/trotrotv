@@ -6,10 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
@@ -18,7 +24,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
  * Created by michael.dugah on 3/15/2018.
  */
 
-public class Survey {
+public class Survey extends JSONObject {
 
     private String id;
     private String brand;
@@ -40,13 +46,38 @@ public class Survey {
         mDbHandler = new DatabaseHandler(context);
     }
 
+    public Survey(String json) throws JSONException {
+        super(json);
+    }
+
+    public static Survey load(Survey survey) {
+        Map map = new LinkedHashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        map.put("id", survey.getId());
+        map.put("brand", survey.getBrand());
+        map.put("question", survey.getQuestion());
+        map.put("answer", survey.getAnswer());
+        map.put("uploaded", survey.getUploaded());
+        map.put("timestamp", survey.getTimestamp());
+
+        try {
+            String json = mapper.writeValueAsString(map);
+            return new Survey(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public void saveSurvey(Survey survey) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Constants.SURVEY_KEY_BRAND_NAME, survey.getBrand());
         values.put(Constants.SURVEY_KEY_QUESTION, survey.getQuestion());
-        values.put(Constants.SURVEY_KEY_TIMESTAMP, new Date().getTime());
+        values.put(Constants.SURVEY_KEY_TIMESTAMP, new Date().toGMTString());
         values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
 
         // Inserting Row

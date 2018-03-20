@@ -5,11 +5,15 @@
               android:orientation="vertical"
               tools:context="trotro.tv.trotrotv.BrandSurveyFragment">
 
-    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="BRAND SURVEY"/>-->
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="BRAND SURVEY"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="35sp"/>
 
     <ListView
         android:id="@+id/list_brands"
@@ -25,6 +29,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
         android:padding="20dp"
+        android:textAllCaps="true"
+        android:textSize="20dp"
         android:text="BRAND NAME"
         android:textAlignment="center"
         android:visibility="gone"/>

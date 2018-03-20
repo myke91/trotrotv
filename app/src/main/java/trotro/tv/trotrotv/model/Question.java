@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +20,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
  * Created by michael.dugah on 3/16/2018.
  */
 
-public class Question {
+public class Question extends JSONObject {
 
     private String id;
     private String question;

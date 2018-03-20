@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/circular_border_imageview"
         android:lines="20"
-        android:inputType="textMultiLine"/>
+        android:scrollbars = "vertical"/>
 
 </LinearLayout>

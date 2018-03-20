@@ -1,18 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center_vertical"
               android:orientation="vertical"
-             android:layout_gravity="center_vertical"
-             tools:context="trotro.tv.trotrotv.FieldReportFragment">
+              tools:context="trotro.tv.trotrotv.FieldReportFragment">
 
-    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:textAlignment="center"-->
-    <!--android:textAllCaps="true"-->
-    <!--android:text="FIELD REPORT"/>-->
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="STATIONS"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="35sp"/>
 
     <ListView
         android:id="@+id/list_stations"
@@ -36,12 +38,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
         android:padding="20dp"
+        android:textSize="20sp"
+        android:textAllCaps="true"
         android:text="VEHICLE NUMBER"
         android:textAlignment="center"
         android:visibility="gone"/>
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -58,8 +62,8 @@
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="30dp"
+        android:gravity="center"
         android:text="SAVE"
         android:visibility="gone"/>
 

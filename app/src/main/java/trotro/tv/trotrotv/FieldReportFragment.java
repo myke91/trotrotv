@@ -6,14 +6,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -36,6 +39,7 @@ public class FieldReportFragment extends Fragment {
     ListView listVehicles;
     LinearLayout formQuestion;
     TextView mVehicleNumber;
+    TextView mPageTitle;
 
     Station mStation;
     Question mQuestion;
@@ -67,6 +71,7 @@ public class FieldReportFragment extends Fragment {
         mButtonSave = layout.findViewById(R.id.button_save);
 
         formQuestion = layout.findViewById(R.id.form_question);
+        mPageTitle = layout.findViewById(R.id.page_title);
 
         getStations();
         return layout;
@@ -97,12 +102,14 @@ public class FieldReportFragment extends Fragment {
             listStations.setVisibility(View.GONE);
             listVehicles.setVisibility(View.VISIBLE);
 
+            mPageTitle.setText("VEHICLES");
+
         }
     };
 
     LinearLayout mFormItemLayout;
     EditText mQuestionText;
-    ToggleButton mAnswerButton;
+    Spinner mAnswerSpinner;
     Button mButtonSave;
 
     AdapterView.OnItemClickListener vehiclesItemClickListener = new AdapterView.OnItemClickListener() {
@@ -115,19 +122,31 @@ public class FieldReportFragment extends Fragment {
             for (Question question : list) {
                 mFormItemLayout = new LinearLayout(getContext());
                 mFormItemLayout.setOrientation(LinearLayout.HORIZONTAL);
-                mFormItemLayout.setWeightSum(2);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                mFormItemLayout.setLayoutParams(lp);
+                mFormItemLayout.setWeightSum(2f);
+
 
                 mQuestionText = new EditText(getContext());
                 mQuestionText.setText(question.getQuestion());
                 mQuestionText.setEnabled(false);
                 mQuestionText.setTextColor(Color.BLACK);
+                LinearLayout.LayoutParams lpQuestionText = (LinearLayout.LayoutParams) mFormItemLayout.getLayoutParams();
+                lpQuestionText.weight = 1.7f;
+                mQuestionText.setLayoutParams(lpQuestionText);
                 mFormItemLayout.addView(mQuestionText);
 
-                mAnswerButton = new ToggleButton(getContext());
-                mAnswerButton.setTextOff("NO");
-                mAnswerButton.setTextOn("YES");
-                mAnswerButton.setText("NO");
-                mFormItemLayout.addView(mAnswerButton);
+                mAnswerSpinner = new Spinner(getContext());
+                List<String> answers = new ArrayList<String>();
+                answers.add("NO");
+                answers.add("YES");
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, answers);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mAnswerSpinner.setAdapter(dataAdapter);
+                LinearLayout.LayoutParams lpAnswerAnswer = (LinearLayout.LayoutParams) mFormItemLayout.getLayoutParams();
+                lpAnswerAnswer.weight = 0.3f;
+                mAnswerSpinner.setLayoutParams(lpAnswerAnswer);
+                mFormItemLayout.addView(mAnswerSpinner);
 
                 formQuestion.addView(mFormItemLayout);
             }
@@ -140,6 +159,8 @@ public class FieldReportFragment extends Fragment {
 
             listVehicles.setVisibility(View.GONE);
             formQuestion.setVisibility(View.VISIBLE);
+
+            mPageTitle.setText("QUESTIONS");
         }
     };
 
@@ -151,7 +172,7 @@ public class FieldReportFragment extends Fragment {
                 Report report = new Report(getContext());
                 LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
                 report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
-                report.setAnswer(((ToggleButton) child.getChildAt(1)).getText().toString());
+                report.setAnswer(((Spinner) child.getChildAt(1)).getSelectedItem().toString());
                 report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
                 report.saveReport(report);
 

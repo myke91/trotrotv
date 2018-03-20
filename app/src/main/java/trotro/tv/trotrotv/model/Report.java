@@ -6,10 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import trotro.tv.trotrotv.constants.Constants;
 import trotro.tv.trotrotv.db.DatabaseHandler;
@@ -18,7 +24,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
  * Created by michael.dugah on 3/15/2018.
  */
 
-public class Report {
+public class Report extends JSONObject {
 
     private String id;
     private String vehicle;
@@ -40,6 +46,31 @@ public class Report {
     public Report() {
     }
 
+    public Report(String json) throws JSONException {
+        super(json);
+    }
+
+    public static Report load(Report report) {
+        Map map = new LinkedHashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        map.put("id", report.getId());
+        map.put("vehicle", report.getVehicle());
+        map.put("question", report.getQuestion());
+        map.put("answer", report.getAnswer());
+        map.put("uploaded", report.getUploaded());
+        map.put("timestamp", report.getTimestamp());
+
+        try {
+            String json = mapper.writeValueAsString(map);
+            return new Report(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
     public void saveReport(Report report) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
 
@@ -47,7 +78,7 @@ public class Report {
         values.put(Constants.REPORT_KEY_VEHICLE_NUMBER, report.getVehicle());
         values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
         values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
-        values.put(Constants.REPORT_KEY_TIMESTAMP, new Date().getTime());
+        values.put(Constants.REPORT_KEY_TIMESTAMP, new Date().toGMTString());
 
         // Inserting Row
         db.insert(Constants.TABLE_REPORT, null, values);
@@ -115,6 +146,21 @@ public class Report {
 
         // return notes list
         return reports;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("{");
+        sb.append("id:").append(getId());
+        sb.append("vehicle:").append(getVehicle());
+        sb.append("question:").append(getQuestion());
+        sb.append("answer:").append(getAnswer());
+        sb.append("timestamp:").append(getTimestamp());
+        sb.append("uploaded:").append(getUploaded());
+        sb.append("}");
+
+        return sb.toString();
     }
 
     public String getId() {
