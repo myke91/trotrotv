@@ -75,7 +75,7 @@ public class Question extends JSONObject {
         List<Question> questions = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'report'";
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'REPORT'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -102,7 +102,7 @@ public class Question extends JSONObject {
         List<Question> questions = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'survey'";
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'SURVEY'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

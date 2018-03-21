@@ -7,8 +7,8 @@ package trotro.tv.trotrotv.constants;
 public class Constants {
     public static final String TAG = "trotro.tv.trotrotv";
 
-    public static final String BACKEND_BASE_URL = "http://10.0.2.2:8000";
-//    public static final String BACKEND_BASE_URL = "http://trotrotv.herokuapp.com";
+//    public static final String BACKEND_BASE_URL = "http://10.0.2.2:8000";
+    public static final String BACKEND_BASE_URL = "http://trotrotv.herokuapp.com";
 
     // All Static variables
     // Database Version
