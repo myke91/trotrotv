@@ -8,4 +8,5 @@
     <string name="title_field_report">FIELD REPORT</string>
     <string name="title_survey">SURVEY</string>
     <string name="title_sync">DATA SYNCHRONIZATION</string>
+    <string name="title_activity_auth">Users</string>
 </resources>

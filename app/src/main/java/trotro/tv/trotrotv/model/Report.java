@@ -32,6 +32,8 @@ public class Report extends JSONObject {
     private String answer;
     private String uploaded;
     private String timestamp;
+    private String user;
+    private String comments;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -60,6 +62,8 @@ public class Report extends JSONObject {
         map.put("answer", report.getAnswer());
         map.put("uploaded", report.getUploaded());
         map.put("timestamp", report.getTimestamp());
+        map.put("user", report.getUser());
+        map.put("comments", report.getComments());
 
         try {
             String json = mapper.writeValueAsString(map);
@@ -79,6 +83,8 @@ public class Report extends JSONObject {
         values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
         values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
         values.put(Constants.REPORT_KEY_TIMESTAMP, new Date().toGMTString());
+        values.put(Constants.REPORT_KEY_USER, report.getUser());
+        values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
 
         // Inserting Row
         db.insert(Constants.TABLE_REPORT, null, values);
@@ -94,6 +100,8 @@ public class Report extends JSONObject {
         values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
         values.put(Constants.REPORT_KEY_UPLOADED, report.getUploaded());
         values.put(Constants.REPORT_KEY_TIMESTAMP, report.getTimestamp());
+        values.put(Constants.REPORT_KEY_USER, report.getUser());
+        values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
 
         // updating row
         db.update(Constants.TABLE_REPORT, values, Constants.REPORT_KEY_ID + " = ?",
@@ -136,6 +144,8 @@ public class Report extends JSONObject {
                 report.setAnswer(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_ANSWER)));
                 report.setTimestamp(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_TIMESTAMP)));
                 report.setUploaded(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_UPLOADED)));
+                report.setUser(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_USER)));
+                report.setComments(cursor.getString(cursor.getColumnIndex(Constants.REPORT_KEY_COMMENTS)));
 
                 reports.add(report);
             } while (cursor.moveToNext());
@@ -209,6 +219,22 @@ public class Report extends JSONObject {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public String getCreatedAt() {

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +148,23 @@ public class FieldReportFragment extends Fragment {
 
                 formQuestion.addView(mFormItemLayout);
             }
+            mFormItemLayout = new LinearLayout(getContext());
+            mFormItemLayout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mFormItemLayout.setLayoutParams(lp);
+            mFormItemLayout.setWeightSum(2f);
+
+            TextView label = new TextView(getContext());
+            label.setText("Additional Comments");
+            EditText editText = new EditText(getContext());
+            editText.setLines(4);
+
+            mFormItemLayout.addView(label);
+            mFormItemLayout.addView(editText);
+
+
+            formQuestion.addView(mFormItemLayout);
+
 
             mVehicleNumber.setText(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
             mVehicleNumber.setVisibility(View.VISIBLE);
@@ -174,6 +189,7 @@ public class FieldReportFragment extends Fragment {
                 report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
                 report.setAnswer(((Spinner) child.getChildAt(1)).getSelectedItem().toString());
                 report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
+                report.setUser(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("user", ""));
                 report.saveReport(report);
 
                 formQuestion.setVisibility(View.GONE);

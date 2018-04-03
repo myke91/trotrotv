@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +126,7 @@ public class BrandSurveyFragment extends Fragment {
                 survey.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
                 survey.setAnswer(((Spinner) child.getChildAt(1)).getSelectedItem().toString());
                 survey.setBrand(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentBrand", ""));
+                survey.setUser(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("user", ""));
                 survey.saveSurvey(survey);
 
                 formQuestion.setVisibility(View.GONE);
@@ -151,14 +151,11 @@ public class BrandSurveyFragment extends Fragment {
         }
     };
 
-    private List<Brand> getBrands() {
+    private void getBrands() {
         List<Brand> list = mBrand.getAllBrands();
 
         BrandListAdapter adapter = new BrandListAdapter(getActivity(), list);
         listBrands.setAdapter(adapter);
-
-        return list;
-
     }
 
     private List<Question> getQuestions() {

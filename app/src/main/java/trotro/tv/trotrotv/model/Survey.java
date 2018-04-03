@@ -32,6 +32,7 @@ public class Survey extends JSONObject {
     private String answer;
     private String uploaded;
     private String timestamp;
+    private String user;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -60,6 +61,7 @@ public class Survey extends JSONObject {
         map.put("answer", survey.getAnswer());
         map.put("uploaded", survey.getUploaded());
         map.put("timestamp", survey.getTimestamp());
+        map.put("user",survey.getUser());
 
         try {
             String json = mapper.writeValueAsString(map);
@@ -79,6 +81,7 @@ public class Survey extends JSONObject {
         values.put(Constants.SURVEY_KEY_QUESTION, survey.getQuestion());
         values.put(Constants.SURVEY_KEY_TIMESTAMP, new Date().toGMTString());
         values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
+        values.put(Constants.SURVEY_KEY_USER, survey.getUser());
 
         // Inserting Row
         db.insert(Constants.TABLE_SURVEY, null, values);
@@ -94,6 +97,7 @@ public class Survey extends JSONObject {
         values.put(Constants.SURVEY_KEY_ANSWER, survey.getAnswer());
         values.put(Constants.SURVEY_KEY_TIMESTAMP, survey.getTimestamp());
         values.put(Constants.SURVEY_KEY_UPLOADED, survey.getUploaded());
+        values.put(Constants.SURVEY_KEY_USER, survey.getUser());
 
         // updating row
         db.update(Constants.TABLE_SURVEY, values, Constants.SURVEY_KEY_ID + " = ?",
@@ -136,6 +140,7 @@ public class Survey extends JSONObject {
                 survey.setAnswer(cursor.getString(cursor.getColumnIndex(Constants.SURVEY_KEY_ANSWER)));
                 survey.setTimestamp(cursor.getString(cursor.getColumnIndex(Constants.SURVEY_KEY_TIMESTAMP)));
                 survey.setUploaded(cursor.getString(cursor.getColumnIndex(Constants.SURVEY_KEY_UPLOADED)));
+                survey.setUser(cursor.getString(cursor.getColumnIndex(Constants.SURVEY_KEY_USER)));
 
                 surveys.add(survey);
             } while (cursor.moveToNext());
@@ -195,6 +200,14 @@ public class Survey extends JSONObject {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getCreatedAt() {

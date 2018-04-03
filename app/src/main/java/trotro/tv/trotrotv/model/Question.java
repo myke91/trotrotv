@@ -25,6 +25,8 @@ public class Question extends JSONObject {
     private String id;
     private String question;
     private String type;
+    private String brandName;
+    private String answerId;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -46,6 +48,7 @@ public class Question extends JSONObject {
         ContentValues values = new ContentValues();
         values.put(Constants.QUESTION_KEY_QUESTION, question.getQuestion());
         values.put(Constants.QUESTION_KEY_TYPE, question.getType());
+        values.put(Constants.QUESTION_KEY_BRAND_NAME, question.getBrandName());
 
         // Inserting Row
         db.insert(Constants.TABLE_QUESTION, null, values);
@@ -86,6 +89,7 @@ public class Question extends JSONObject {
                 question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
                 question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
                 question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
 
                 questions.add(question);
             } while (cursor.moveToNext());
@@ -113,6 +117,7 @@ public class Question extends JSONObject {
                 question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
                 question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
                 question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
 
                 questions.add(question);
             } while (cursor.moveToNext());
@@ -141,6 +146,7 @@ public class Question extends JSONObject {
                 question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
                 question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
                 question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
 
                 questions.add(question);
             } while (cursor.moveToNext());
@@ -175,6 +181,22 @@ public class Question extends JSONObject {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
     }
 
     public String getCreatedAt() {

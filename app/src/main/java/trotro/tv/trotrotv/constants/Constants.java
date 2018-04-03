@@ -7,8 +7,8 @@ package trotro.tv.trotrotv.constants;
 public class Constants {
     public static final String TAG = "trotro.tv.trotrotv";
 
-//    public static final String BACKEND_BASE_URL = "http://10.0.2.2:8000";
-    public static final String BACKEND_BASE_URL = "http://trotrotv.herokuapp.com";
+    public static final String BACKEND_BASE_URL = "http://10.0.2.2:8000";
+//    public static final String BACKEND_BASE_URL = "http://trotrotv.herokuapp.com";
 
     // All Static variables
     // Database Version
@@ -29,6 +29,10 @@ public class Constants {
     public static final String TABLE_VEHICLE = "vehicle";
     // Question table name
     public static final String TABLE_QUESTION = "question";
+    // Question table name
+    public static final String TABLE_ANSWER = "answer";
+    // Question table name
+    public static final String TABLE_ACCESS_CODE = "access_code";
 
 
     public static final String BRAND_KEY_ID = "id";
@@ -44,7 +48,8 @@ public class Constants {
     public static final String REPORT_KEY_ANSWER = "answer";
     public static final String REPORT_KEY_UPLOADED = "uploaded";
     public static final String REPORT_KEY_TIMESTAMP = "timestamp";
-
+    public static final String REPORT_KEY_USER = "user";
+    public static final String REPORT_KEY_COMMENTS = "comments";
 
     public static final String STATION_KEY_ID = "id";
     public static final String STATION_KEY_NAME = "name";
@@ -56,12 +61,22 @@ public class Constants {
     public static final String SURVEY_KEY_ANSWER = "answer";
     public static final String SURVEY_KEY_UPLOADED = "uploaded";
     public static final String SURVEY_KEY_TIMESTAMP = "timestamp";
+    public static final String SURVEY_KEY_USER = "user";
 
     public static final String VEHICLE_KEY_ID = "id";
     public static final String VEHICLE_KEY_VEHICLE_NUMBER = "vehicle";
     public static final String VEHICLE_KEY_STATION_NAME = "station";
 
     public static final String QUESTION_KEY_ID = "id";
-    public static final String QUESTION_KEY_QUESTION= "question";
+    public static final String QUESTION_KEY_QUESTION = "question";
     public static final String QUESTION_KEY_TYPE = "type";
+    public static final String QUESTION_KEY_BRAND_NAME = "brand_name";
+
+    public static final String ANSWER_KEY_ID = "id";
+    public static final String ANSWER_KEY_ANSWER = "answer";
+    public static final String ANSWER_KEY_QUESTION_ID = "question_id";
+
+    public static final String ACCESS_CODE_KEY_ID = "id";
+    public static final String ACCESS_CODE_KEY_USERNAME = "username";
+    public static final String ACCESS_CODE_KEY_CODE = "code";
 }
