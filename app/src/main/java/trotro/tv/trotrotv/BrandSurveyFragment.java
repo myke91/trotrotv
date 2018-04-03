@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trotro.tv.trotrotv.adapter.BrandListAdapter;
+import trotro.tv.trotrotv.model.Answer;
 import trotro.tv.trotrotv.model.Brand;
 import trotro.tv.trotrotv.model.Question;
 import trotro.tv.trotrotv.model.Survey;
@@ -36,6 +37,11 @@ public class BrandSurveyFragment extends Fragment {
 
     Brand mBrand;
     Question mQuestion;
+    Answer mAnswer;
+
+    EditText mRespondentName;
+    EditText mRespondentTelNumber;
+    EditText mRespondentEmail;
 
     LinearLayout formQuestion;
 
@@ -44,6 +50,8 @@ public class BrandSurveyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBrand = new Brand(getContext());
         mQuestion = new Question(getContext());
+        mAnswer = new Answer(getContext());
+
     }
 
     @Override
@@ -54,6 +62,12 @@ public class BrandSurveyFragment extends Fragment {
         listBrands = layout.findViewById(R.id.list_brands);
         listBrands.setOnItemClickListener(itemClickListener);
         mButtonSave = layout.findViewById(R.id.button_save);
+
+        mRespondentDetails = layout.findViewById(R.id.respondent_details);
+        mRespondentName = layout.findViewById(R.id.respondentName);
+        mRespondentTelNumber = layout.findViewById(R.id.respondentTelNumber);
+        mRespondentEmail = layout.findViewById(R.id.respondentEmail);
+
         formQuestion = layout.findViewById(R.id.form_question);
         mBrandName = layout.findViewById(R.id.brand_name);
         getBrands();
@@ -65,13 +79,14 @@ public class BrandSurveyFragment extends Fragment {
     EditText mQuestionText;
     Spinner mAnswerSpinner;
     Button mButtonSave;
+    LinearLayout mRespondentDetails;
 
     AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             Brand brand = (Brand) listBrands.getItemAtPosition(position);
             getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).edit().putString("currentBrand", brand.getBrandName()).apply();
-            List<Question> list = getQuestions();
+            List<Question> list = getQuestions(brand.getBrandName());
             formQuestion.removeAllViews();
             for (Question question : list) {
                 mFormItemLayout = new LinearLayout(getContext());
@@ -90,9 +105,7 @@ public class BrandSurveyFragment extends Fragment {
                 mFormItemLayout.addView(mQuestionText);
 
                 mAnswerSpinner = new Spinner(getContext());
-                List<String> answers = new ArrayList<String>();
-                answers.add("NO");
-                answers.add("YES");
+                List<String> answers = mAnswer.getAnswersForQuestion(question.getId());
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, answers);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mAnswerSpinner.setAdapter(dataAdapter);
@@ -106,6 +119,8 @@ public class BrandSurveyFragment extends Fragment {
 
             mBrandName.setText(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentBrand", ""));
             mBrandName.setVisibility(View.VISIBLE);
+
+            mRespondentDetails.setVisibility(View.VISIBLE);
 
             mButtonSave.setOnClickListener(saveClickListener);
             mButtonSave.setVisibility(View.VISIBLE);
@@ -127,10 +142,15 @@ public class BrandSurveyFragment extends Fragment {
                 survey.setAnswer(((Spinner) child.getChildAt(1)).getSelectedItem().toString());
                 survey.setBrand(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentBrand", ""));
                 survey.setUser(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("user", ""));
+
+                survey.setRespondentName(mRespondentName.getText().toString());
+                survey.setRespondentTelNumber(mRespondentTelNumber.getText().toString());
+                survey.setRespondentEmail(mRespondentEmail.getText().toString());
                 survey.saveSurvey(survey);
 
                 formQuestion.setVisibility(View.GONE);
                 mButtonSave.setVisibility(View.GONE);
+                mRespondentDetails.setVisibility(View.GONE);
                 mBrandName.setVisibility(View.GONE);
 
                 listBrands.setVisibility(View.VISIBLE);
@@ -158,8 +178,8 @@ public class BrandSurveyFragment extends Fragment {
         listBrands.setAdapter(adapter);
     }
 
-    private List<Question> getQuestions() {
-        return mQuestion.getQuestionsForSurvey();
+    private List<Question> getQuestions(String brand) {
+        return mQuestion.getQuestionForBrand(brand);
     }
 
 }

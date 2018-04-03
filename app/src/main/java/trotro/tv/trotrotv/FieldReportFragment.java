@@ -38,6 +38,7 @@ public class FieldReportFragment extends Fragment {
     LinearLayout formQuestion;
     TextView mVehicleNumber;
     TextView mPageTitle;
+    EditText mAdditionalComments;
 
     Station mStation;
     Question mQuestion;
@@ -67,6 +68,8 @@ public class FieldReportFragment extends Fragment {
 
         mVehicleNumber = layout.findViewById(R.id.vehicle_number);
         mButtonSave = layout.findViewById(R.id.button_save);
+
+        mAdditionalComments = layout.findViewById(R.id.additionalCommentText);
 
         formQuestion = layout.findViewById(R.id.form_question);
         mPageTitle = layout.findViewById(R.id.page_title);
@@ -148,29 +151,14 @@ public class FieldReportFragment extends Fragment {
 
                 formQuestion.addView(mFormItemLayout);
             }
-            mFormItemLayout = new LinearLayout(getContext());
-            mFormItemLayout.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            mFormItemLayout.setLayoutParams(lp);
-            mFormItemLayout.setWeightSum(2f);
-
-            TextView label = new TextView(getContext());
-            label.setText("Additional Comments");
-            EditText editText = new EditText(getContext());
-            editText.setLines(4);
-
-            mFormItemLayout.addView(label);
-            mFormItemLayout.addView(editText);
-
-
-            formQuestion.addView(mFormItemLayout);
-
-
+            
             mVehicleNumber.setText(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
             mVehicleNumber.setVisibility(View.VISIBLE);
 
             mButtonSave.setOnClickListener(saveClickListener);
             mButtonSave.setVisibility(View.VISIBLE);
+
+            mAdditionalComments.setVisibility(View.VISIBLE);
 
             listVehicles.setVisibility(View.GONE);
             formQuestion.setVisibility(View.VISIBLE);
@@ -183,33 +171,23 @@ public class FieldReportFragment extends Fragment {
         @Override
         public void onClick(View view) {
             for (int i = 0; i < formQuestion.getChildCount(); i++) {
-//                try {
+
                 Report report = new Report(getContext());
                 LinearLayout child = (LinearLayout) formQuestion.getChildAt(i);
                 report.setQuestion(((EditText) child.getChildAt(0)).getText().toString());
                 report.setAnswer(((Spinner) child.getChildAt(1)).getSelectedItem().toString());
                 report.setVehicle(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("currentVehicle", ""));
                 report.setUser(getContext().getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE).getString("user", ""));
+                report.setComments(mAdditionalComments.getText().toString());
                 report.saveReport(report);
 
                 formQuestion.setVisibility(View.GONE);
                 mButtonSave.setVisibility(View.GONE);
+                mAdditionalComments.setVisibility(View.GONE);
                 mVehicleNumber.setVisibility(View.GONE);
 
                 listStations.setVisibility(View.VISIBLE);
 
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                    builder.setMessage("SAVE SUCCESSFUL");
-//                    builder.setTitle(R.string.app_name);
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                } catch (Exception ex) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                    builder.setMessage("ERROR OCCURED WHILST SAVING REPORT");
-//                    builder.setTitle(R.string.app_name);
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                }
             }
         }
     };

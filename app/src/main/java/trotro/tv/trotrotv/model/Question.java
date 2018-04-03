@@ -1,9 +1,11 @@
 package trotro.tv.trotrotv.model;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,6 +27,7 @@ public class Question extends JSONObject {
     private String id;
     private String question;
     private String type;
+    @JsonProperty("brand_name")
     private String brandName;
     private String answerId;
     @JsonProperty("created_at")
@@ -44,15 +47,20 @@ public class Question extends JSONObject {
 
     public void saveQuestion(Question question) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(Constants.QUESTION_KEY_QUESTION, question.getQuestion());
+            values.put(Constants.QUESTION_KEY_TYPE, question.getType());
+            values.put(Constants.QUESTION_KEY_BRAND_NAME, question.getBrandName());
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.QUESTION_KEY_QUESTION, question.getQuestion());
-        values.put(Constants.QUESTION_KEY_TYPE, question.getType());
-        values.put(Constants.QUESTION_KEY_BRAND_NAME, question.getBrandName());
+            // Inserting Row
+            db.insert(Constants.TABLE_QUESTION, null, values);
+        } catch (Exception ex) {
+            Log.d("TrotroTV", ex.getMessage());
+        } finally {
+            db.close(); // Closing database connection
+        }
 
-        // Inserting Row
-        db.insert(Constants.TABLE_QUESTION, null, values);
-        db.close(); // Closing database connection
     }
 
     public void editQuestion(int id) {
@@ -60,9 +68,14 @@ public class Question extends JSONObject {
 
     public void deleteQuestion(Question question) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_QUESTION, Constants.QUESTION_KEY_ID + " = ?",
-                new String[]{String.valueOf(question.getId())});
-        db.close();
+        try {
+            db.delete(Constants.TABLE_QUESTION, Constants.QUESTION_KEY_ID + " = ?",
+                    new String[]{String.valueOf(question.getId())});
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            db.close();
+        }
     }
 
     public void getQuestion(int id) {
@@ -70,8 +83,15 @@ public class Question extends JSONObject {
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.execSQL("DELETE FROM " + Constants.TABLE_QUESTION);
-        db.close();
+        try {
+            db.execSQL("DELETE FROM " + Constants.TABLE_QUESTION);
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            db.close();
+        }
+
+
     }
 
     public List<Question> getQuestionsForReport() {
@@ -81,22 +101,28 @@ public class Question extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'REPORT'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Question question = new Question();
-                question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
-                question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
-                question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
-                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+        try {
 
-                questions.add(question);
-            } while (cursor.moveToNext());
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Question question = new Question();
+                    question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                    question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                    question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                    question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+
+                    questions.add(question);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return questions;
@@ -109,22 +135,64 @@ public class Question extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE type = 'SURVEY'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Question question = new Question();
-                question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
-                question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
-                question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
-                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+        try {
 
-                questions.add(question);
-            } while (cursor.moveToNext());
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Question question = new Question();
+                    question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                    question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                    question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                    question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+
+                    questions.add(question);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            // close db connection
+            db.close();
         }
 
-        // close db connection
-        db.close();
+
+        // return notes list
+        return questions;
+    }
+
+    public List<Question> getQuestionForBrand(String brandName) {
+        List<Question> questions = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION + " WHERE " + Constants.QUESTION_KEY_BRAND_NAME + " = '" + brandName + "'";
+
+        SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
+
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Question question = new Question();
+                    question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                    question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                    question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                    question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+
+                    questions.add(question);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            // close db connection
+            db.close();
+        }
+
 
         // return notes list
         return questions;
@@ -137,23 +205,29 @@ public class Question extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_QUESTION;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Question question = new Question();
-                question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
-                question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
-                question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
-                question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
 
-                questions.add(question);
-            } while (cursor.moveToNext());
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Question question = new Question();
+                    question.setId(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_ID)));
+                    question.setQuestion(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_QUESTION)));
+                    question.setType(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_TYPE)));
+                    question.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.QUESTION_KEY_BRAND_NAME)));
+
+                    questions.add(question);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return questions;

@@ -62,6 +62,9 @@ public class Constants {
     public static final String SURVEY_KEY_UPLOADED = "uploaded";
     public static final String SURVEY_KEY_TIMESTAMP = "timestamp";
     public static final String SURVEY_KEY_USER = "user";
+    public static final String SURVEY_KEY_RESPONDENT_NAME = "respondent_name";
+    public static final String SURVEY_KEY_RESPONDENT_TEL_NUMBER = "respondent_tel_number";
+    public static final String SURVEY_KEY_RESPONDENT_EMAIL = "respondent_email";
 
     public static final String VEHICLE_KEY_ID = "id";
     public static final String VEHICLE_KEY_VEHICLE_NUMBER = "vehicle";

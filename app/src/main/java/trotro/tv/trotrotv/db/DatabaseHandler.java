@@ -12,12 +12,6 @@ import trotro.tv.trotrotv.constants.Constants;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-
-    // Contacts Table Columns names
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_PH_NO = "phone_number";
-
     public DatabaseHandler(Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
     }
@@ -39,7 +33,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Constants.REPORT_KEY_ANSWER + " TEXT, "
                 + Constants.REPORT_KEY_TIMESTAMP + " TEXT, "
                 + Constants.REPORT_KEY_UPLOADED + " TEXT, "
-                + Constants.REPORT_KEY_VEHICLE_NUMBER + " TEXT" + ")";
+                + Constants.REPORT_KEY_VEHICLE_NUMBER + " TEXT, "
+                + Constants.REPORT_KEY_USER + " TEX, "
+                + Constants.REPORT_KEY_COMMENTS + " TEXT)";
 
         String CREATE_STATION_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_STATION + "("
                 + Constants.STATION_KEY_ID + " INTEGER PRIMARY KEY, "
@@ -52,7 +48,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Constants.SURVEY_KEY_QUESTION + " TEXT, "
                 + Constants.SURVEY_KEY_ANSWER + " TEXT, "
                 + Constants.SURVEY_KEY_TIMESTAMP + " TEXT, "
-                + Constants.SURVEY_KEY_UPLOADED + " TEXT )";
+                + Constants.SURVEY_KEY_UPLOADED + " TEXT, "
+                + Constants.SURVEY_KEY_USER + " TEXT, "
+                + Constants.SURVEY_KEY_RESPONDENT_NAME + " TEXT, "
+                + Constants.SURVEY_KEY_RESPONDENT_TEL_NUMBER + " TEXT, "
+                + Constants.SURVEY_KEY_RESPONDENT_EMAIL + " TEXT )";
 
         String CREATE_VEHICLE_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_VEHICLE + "("
                 + Constants.VEHICLE_KEY_ID + " INTEGER PRIMARY KEY, "
@@ -62,7 +62,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_QUESTION_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_QUESTION + "("
                 + Constants.QUESTION_KEY_ID + " INTEGER PRIMARY KEY, "
                 + Constants.QUESTION_KEY_QUESTION + " TEXT, "
-                + Constants.QUESTION_KEY_TYPE + " TEXT )";
+                + Constants.QUESTION_KEY_TYPE + " TEXT, "
+                + Constants.QUESTION_KEY_BRAND_NAME + " TEXT)";
 
         String CREATE_ACCESS_CODE_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_ACCESS_CODE + "("
                 + Constants.ACCESS_CODE_KEY_ID + " INTEGER PRIMARY KEY, "

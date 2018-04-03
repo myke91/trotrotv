@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import trotro.tv.trotrotv.db.DatabaseHandler;
 public class Answer {
     private String id;
     private String answer;
+    @JsonProperty("question_id")
     private String questionId;
     @JsonProperty("created_at")
     private String createdAt;
@@ -67,23 +69,18 @@ public class Answer {
         db.close();
     }
 
-    public List<Answer> getAnswersForQuestion(String questionId) {
-        List<Answer> answers = new ArrayList<>();
+    public List<String> getAnswersForQuestion(String questionId) {
+        List<String> answers = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Constants.TABLE_ANSWER+ " WHERE question_id = "+questionId;
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_ANSWER + " WHERE question_id = '" + questionId + "'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Answer answer = new Answer();
-                answer.setId(cursor.getString(cursor.getColumnIndex(Constants.ANSWER_KEY_ID)));
-                answer.setAnswer(cursor.getString(cursor.getColumnIndex(Constants.ANSWER_KEY_ANSWER)));
-                answer.setQuestionId(cursor.getString(cursor.getColumnIndex(Constants.ANSWER_KEY_QUESTION_ID)));
-
-                answers.add(answer);
+                answers.add(cursor.getString(cursor.getColumnIndex(Constants.ANSWER_KEY_ANSWER)));
             } while (cursor.moveToNext());
         }
 
@@ -93,6 +90,7 @@ public class Answer {
         // return notes list
         return answers;
     }
+
 
     public List<Answer> getAllAnswers() {
         List<Answer> answers = new ArrayList<>();
@@ -145,4 +143,5 @@ public class Answer {
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
+
 }

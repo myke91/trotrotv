@@ -29,22 +29,55 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="15dp"
         android:padding="20dp"
-        android:textAllCaps="true"
-        android:textSize="20dp"
         android:text="BRAND NAME"
         android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="20dp"
         android:visibility="gone"/>
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/form_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/form_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/respondent_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/respondentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respondent Name"/>
+
+                <EditText
+                    android:id="@+id/respondentTelNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respondent Tel. Number"/>
+
+                <EditText
+                    android:id="@+id/respondentEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respondent E-Mail"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -53,8 +86,8 @@
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="30dp"
+        android:gravity="center"
         android:text="SAVE"
         android:visibility="gone"/>
 

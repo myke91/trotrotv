@@ -88,38 +88,38 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void getAccessCodes() {
-        List<AccessCode> list = new ArrayList<>();
+//        List<AccessCode> list = new ArrayList<>();
+//
+//        AccessCode accessCode = new AccessCode("KMensah", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("KMensah", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("AmaBee", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("Nana", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("Kwesi", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("MaameAwuku", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
+//
+//        accessCode = new AccessCode("Joojo", "123");
+//        mAccessCode.saveAccessCode(accessCode);
+//        list.add(accessCode);
 
-        AccessCode accessCode = new AccessCode("KMensah", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
 
-        accessCode = new AccessCode("KMensah", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-        accessCode = new AccessCode("AmaBee", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-        accessCode = new AccessCode("Nana", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-        accessCode = new AccessCode("Kwesi", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-        accessCode = new AccessCode("MaameAwuku", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-        accessCode = new AccessCode("Joojo", "123");
-        mAccessCode.saveAccessCode(accessCode);
-        list.add(accessCode);
-
-
-//        List<AccessCode> list = mAccessCode.getAllAccessCodes();
+        List<AccessCode> list = mAccessCode.getAllAccessCodes();
         AccessCodeListAdapter adapter = new AccessCodeListAdapter(getApplicationContext(), list);
         listAccessCodes.setAdapter(adapter);
     }
@@ -137,7 +137,7 @@ public class UserActivity extends AppCompatActivity {
     View.OnClickListener syncButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mProgressDialog = ProgressDialog.show(getApplicationContext(), "", "Downloading access codes ...");
+            mProgressDialog = ProgressDialog.show(UserActivity.this, "", "Downloading access codes ...");
             mProgressDialog.show();
 
             JsonArrayRequest accessCodesRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/codes", null, new Response.Listener<JSONArray>() {
@@ -155,6 +155,7 @@ public class UserActivity extends AppCompatActivity {
                         }
                     }
                     mProgressDialog.dismiss();
+                    getAccessCodes();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -187,7 +188,7 @@ public class UserActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     dialog.dismiss();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
                     builder.setMessage("Invalid Code");
                     builder.setTitle(R.string.app_name);
                     AlertDialog errorDialog = builder.create();

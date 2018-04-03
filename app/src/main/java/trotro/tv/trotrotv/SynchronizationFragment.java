@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trotro.tv.trotrotv.constants.Constants;
+import trotro.tv.trotrotv.model.Answer;
 import trotro.tv.trotrotv.model.Brand;
 import trotro.tv.trotrotv.model.Question;
 import trotro.tv.trotrotv.model.Report;
@@ -50,6 +51,7 @@ public class SynchronizationFragment extends Fragment {
     RequestQueue mRequestQueue;
     ProgressDialog mProgressDialog;
     Station mStation;
+    Answer mAnswer;
     Question mQuestion;
     Brand mBrand;
     Report mReport;
@@ -67,6 +69,7 @@ public class SynchronizationFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(getActivity());
         mStation = new Station(getContext());
         mQuestion = new Question(getContext());
+        mAnswer = new Answer(getContext());
         mBrand = new Brand(getContext());
         mReport = new Report(getContext());
         mSurvey = new Survey(getContext());
@@ -144,6 +147,30 @@ public class SynchronizationFragment extends Fragment {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     mProcessOutput.append("Error downloading questions ").append(error.getMessage()).append("\n");
+                    mTextProcessOutput.setText(mProcessOutput.toString());
+                }
+            });
+
+            JsonArrayRequest answersRequest = new JsonArrayRequest(Request.Method.GET, Constants.BACKEND_BASE_URL + "/api/answers", null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    mAnswer.clearData();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject json = response.getJSONObject(i);
+                            Answer answer = mapper.readValue(json.toString(), Answer.class);
+                            mAnswer.saveAnswer(answer);
+                            mProcessOutput.append("Downloaded and saved answer ---> ").append(answer.getAnswer()).append("\n");
+                            mTextProcessOutput.setText(mProcessOutput.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mProcessOutput.append("Error downloading answers ").append(error.getMessage()).append("\n");
                     mTextProcessOutput.setText(mProcessOutput.toString());
                 }
             });
@@ -277,13 +304,9 @@ public class SynchronizationFragment extends Fragment {
             mRequestQueue.add(vehiclesRequest);
             mRequestQueue.add(stationsRequest);
             mRequestQueue.add(questionsRequest);
+            mRequestQueue.add(answersRequest);
             mRequestQueue.add(reportsRequest);
             mRequestQueue.add(surveysRequest);
-
-
-
         }
     };
-
-
 }
