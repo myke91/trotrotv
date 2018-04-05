@@ -42,17 +42,24 @@ public class Station extends JSONObject {
     }
 
 
-
     public void saveStation(Station station) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.STATION_KEY_NAME, station.getStationName());
-        values.put(Constants.STATION_KEY_LOCATION, station.getLocation());
+            ContentValues values = new ContentValues();
+            values.put(Constants.STATION_KEY_ID, station.getId());
+            values.put(Constants.STATION_KEY_NAME, station.getStationName());
+            values.put(Constants.STATION_KEY_LOCATION, station.getLocation());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_STATION, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_STATION, null, values);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close(); // Closing database connection
+        }
     }
 
     public void editStation(int id) {
@@ -60,15 +67,31 @@ public class Station extends JSONObject {
 
     public void deleteStation(Station station) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_STATION, Constants.STATION_KEY_ID + " = ?",
-                new String[]{String.valueOf(station.getId())});
-        db.close();
+        try {
+
+            db.delete(Constants.TABLE_STATION, Constants.STATION_KEY_ID + " = ?",
+                    new String[]{String.valueOf(station.getId())});
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.execSQL("DELETE FROM "+Constants.TABLE_STATION);
-        db.close();
+        try {
+
+            db.execSQL("DELETE FROM " + Constants.TABLE_STATION);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
 
     public void getStation(int id) {
@@ -81,22 +104,29 @@ public class Station extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_STATION;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Station station = new Station();
-                station.setId(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_ID)));
-                station.setStationName(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_NAME)));
-                station.setLocation(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_LOCATION)));
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-                stations.add(station);
-            } while (cursor.moveToNext());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Station station = new Station();
+                    station.setId(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_ID)));
+                    station.setStationName(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_NAME)));
+                    station.setLocation(cursor.getString(cursor.getColumnIndex(Constants.STATION_KEY_LOCATION)));
+
+                    stations.add(station);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return stations;

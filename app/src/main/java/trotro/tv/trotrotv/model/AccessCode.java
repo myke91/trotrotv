@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,14 +45,22 @@ public class AccessCode {
 
     public void saveAccessCode(AccessCode accessCode) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.ACCESS_CODE_KEY_USERNAME, accessCode.getUsername());
-        values.put(Constants.ACCESS_CODE_KEY_CODE, accessCode.getCode());
+            ContentValues values = new ContentValues();
+            values.put(Constants.ACCESS_CODE_KEY_ID, accessCode.getId());
+            values.put(Constants.ACCESS_CODE_KEY_USERNAME, accessCode.getUsername());
+            values.put(Constants.ACCESS_CODE_KEY_CODE, accessCode.getCode());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_ACCESS_CODE, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_ACCESS_CODE, null, values);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close(); // Closing database connection
+        }
     }
 
     public boolean doValidate(String username, String code) {
@@ -61,21 +70,28 @@ public class AccessCode {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_ACCESS_CODE + " WHERE " + Constants.ACCESS_CODE_KEY_USERNAME + " = '" + username + "' AND " + Constants.ACCESS_CODE_KEY_CODE + " = '" + code + "'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                AccessCode accessCode = new AccessCode();
-                accessCode.setId(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_ID)));
-                accessCode.setUsername(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_USERNAME)));
-                accessCode.setCode(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_CODE)));
+        try {
 
-                accessCodes.add(accessCode);
-            } while (cursor.moveToNext());
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    AccessCode accessCode = new AccessCode();
+                    accessCode.setId(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_ID)));
+                    accessCode.setUsername(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_USERNAME)));
+                    accessCode.setCode(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_CODE)));
+
+                    accessCodes.add(accessCode);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+
+        } finally {
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
+        ;
 
         // return notes list
         return !accessCodes.isEmpty();
@@ -87,9 +103,16 @@ public class AccessCode {
 
     public void deleteAccessCode(AccessCode accessCode) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_ACCESS_CODE, Constants.ACCESS_CODE_KEY_ID + " = ?",
-                new String[]{String.valueOf(accessCode.getId())});
-        db.close();
+        try {
+            db.delete(Constants.TABLE_ACCESS_CODE, Constants.ACCESS_CODE_KEY_ID + " = ?",
+                    new String[]{String.valueOf(accessCode.getId())});
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
+
     }
 
     public void getAccessCode(int id) {
@@ -97,8 +120,15 @@ public class AccessCode {
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.execSQL("DELETE FROM " + Constants.TABLE_ACCESS_CODE);
-        db.close();
+        try {
+            db.execSQL("DELETE FROM " + Constants.TABLE_ACCESS_CODE);
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
+
     }
 
     public List<AccessCode> getAllAccessCodes() {
@@ -108,22 +138,27 @@ public class AccessCode {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_ACCESS_CODE;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                AccessCode accessCode = new AccessCode();
-                accessCode.setId(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_ID)));
-                accessCode.setUsername(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_USERNAME)));
-                accessCode.setCode(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_CODE)));
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    AccessCode accessCode = new AccessCode();
+                    accessCode.setId(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_ID)));
+                    accessCode.setUsername(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_USERNAME)));
+                    accessCode.setCode(cursor.getString(cursor.getColumnIndex(Constants.ACCESS_CODE_KEY_CODE)));
 
-                accessCodes.add(accessCode);
-            } while (cursor.moveToNext());
+                    accessCodes.add(accessCode);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Log.e("TrotroTV", ex.getMessage());
+        } finally {
+            // close db connection
+            db.close();
         }
 
-        // close db connection
-        db.close();
 
         // return notes list
         return accessCodes;

@@ -77,49 +77,79 @@ public class Report extends JSONObject {
 
     public void saveReport(Report report) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.REPORT_KEY_VEHICLE_NUMBER, report.getVehicle());
-        values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
-        values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
-        values.put(Constants.REPORT_KEY_TIMESTAMP, new Date().toGMTString());
-        values.put(Constants.REPORT_KEY_USER, report.getUser());
-        values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
+            ContentValues values = new ContentValues();
+            values.put(Constants.REPORT_KEY_VEHICLE_NUMBER, report.getVehicle());
+            values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
+            values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
+            values.put(Constants.REPORT_KEY_TIMESTAMP, new Date().toGMTString());
+            values.put(Constants.REPORT_KEY_USER, report.getUser());
+            values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_REPORT, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_REPORT, null, values);
+
+        } catch (Exception ex) {
+
+
+        } finally {
+            db.close(); // Closing database connection
+        }
     }
 
     public void editReport(Report report) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.REPORT_KEY_VEHICLE_NUMBER, report.getVehicle());
-        values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
-        values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
-        values.put(Constants.REPORT_KEY_UPLOADED, report.getUploaded());
-        values.put(Constants.REPORT_KEY_TIMESTAMP, report.getTimestamp());
-        values.put(Constants.REPORT_KEY_USER, report.getUser());
-        values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
+            ContentValues values = new ContentValues();
+            values.put(Constants.REPORT_KEY_VEHICLE_NUMBER, report.getVehicle());
+            values.put(Constants.REPORT_KEY_QUESTION, report.getQuestion());
+            values.put(Constants.REPORT_KEY_ANSWER, report.getAnswer());
+            values.put(Constants.REPORT_KEY_UPLOADED, report.getUploaded());
+            values.put(Constants.REPORT_KEY_TIMESTAMP, report.getTimestamp());
+            values.put(Constants.REPORT_KEY_USER, report.getUser());
+            values.put(Constants.REPORT_KEY_COMMENTS, report.getComments());
 
-        // updating row
-        db.update(Constants.TABLE_REPORT, values, Constants.REPORT_KEY_ID + " = ?",
-                new String[]{String.valueOf(report.getId())});
+            // updating row
+            db.update(Constants.TABLE_REPORT, values, Constants.REPORT_KEY_ID + " = ?",
+                    new String[]{String.valueOf(report.getId())});
+
+        } catch (Exception ex) {
+
+        } finally {
+            db.close();
+        }
     }
 
     public void deleteReport(Report report) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         db.delete(Constants.TABLE_REPORT, Constants.REPORT_KEY_ID + " = ?",
                 new String[]{String.valueOf(report.getId())});
-        db.close();
+
+        }catch (Exception ex){
+
+        }finally {
+
+            db.close();
+        }
     }
 
     public void clearReportData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         db.delete(Constants.TABLE_REPORT, Constants.REPORT_KEY_UPLOADED + " = ?",
                 new String[]{String.valueOf("true")});
-        db.close();
+
+        }catch (Exception ex){
+
+        }finally {
+
+            db.close();
+        }
     }
 
     public void getReport(int id) {
@@ -132,6 +162,8 @@ public class Report extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_REPORT;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -151,8 +183,13 @@ public class Report extends JSONObject {
             } while (cursor.moveToNext());
         }
 
-        // close db connection
-        db.close();
+        }catch (Exception ex){
+
+        }finally {
+
+            // close db connection
+            db.close();
+        }
 
         // return notes list
         return reports;
@@ -168,6 +205,8 @@ public class Report extends JSONObject {
         sb.append("answer:").append(getAnswer());
         sb.append("timestamp:").append(getTimestamp());
         sb.append("uploaded:").append(getUploaded());
+        sb.append("user:").append(getUser());
+        sb.append("comments:").append(getComments());
         sb.append("}");
 
         return sb.toString();

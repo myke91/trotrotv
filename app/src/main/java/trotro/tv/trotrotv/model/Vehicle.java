@@ -41,14 +41,22 @@ public class Vehicle extends JSONObject {
 
     public void saveVehicle(Vehicle vehicle) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.VEHICLE_KEY_STATION_NAME, vehicle.getStation());
-        values.put(Constants.VEHICLE_KEY_VEHICLE_NUMBER, vehicle.getVehicle());
+            ContentValues values = new ContentValues();
+            values.put(Constants.VEHICLE_KEY_ID, vehicle.getId());
+            values.put(Constants.VEHICLE_KEY_STATION_NAME, vehicle.getStation());
+            values.put(Constants.VEHICLE_KEY_VEHICLE_NUMBER, vehicle.getVehicle());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_VEHICLE, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_VEHICLE, null, values);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close(); // Closing database connection
+        }
     }
 
     public void editVehicle(int id) {
@@ -56,9 +64,17 @@ public class Vehicle extends JSONObject {
 
     public void deleteVehicle(Vehicle vehicle) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_VEHICLE, Constants.VEHICLE_KEY_ID + " = ?",
-                new String[]{String.valueOf(vehicle.getId())});
-        db.close();
+        try {
+
+            db.delete(Constants.TABLE_VEHICLE, Constants.VEHICLE_KEY_ID + " = ?",
+                    new String[]{String.valueOf(vehicle.getId())});
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
 
     public void getVehicle(int id) {
@@ -71,22 +87,29 @@ public class Vehicle extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_VEHICLE;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Vehicle vehicle = new Vehicle();
-                vehicle.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
-                vehicle.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_VEHICLE_NUMBER)));
-                vehicle.setStation(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_STATION_NAME)));
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-                vehicles.add(vehicle);
-            } while (cursor.moveToNext());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Vehicle vehicle = new Vehicle();
+                    vehicle.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
+                    vehicle.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_VEHICLE_NUMBER)));
+                    vehicle.setStation(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_STATION_NAME)));
+
+                    vehicles.add(vehicle);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return vehicles;
@@ -99,21 +122,29 @@ public class Vehicle extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_VEHICLE + " WHERE " + Constants.VEHICLE_KEY_STATION_NAME + " = '" + station.getStationName() + "'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Vehicle vehicle = new Vehicle();
-                vehicle.setId(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_ID)));
-                vehicle.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_VEHICLE_NUMBER)));
-                vehicle.setStation(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_STATION_NAME)));
+        try {
 
-                vehicles.add(vehicle);
-            } while (cursor.moveToNext());
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Vehicle vehicle = new Vehicle();
+                    vehicle.setId(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_ID)));
+                    vehicle.setVehicle(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_VEHICLE_NUMBER)));
+                    vehicle.setStation(cursor.getString(cursor.getColumnIndex(Constants.VEHICLE_KEY_STATION_NAME)));
+
+                    vehicles.add(vehicle);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            // close db connection
+            db.close();
+
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return vehicles;
@@ -121,8 +152,16 @@ public class Vehicle extends JSONObject {
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         db.execSQL("DELETE FROM " + Constants.TABLE_VEHICLE);
-        db.close();
+
+        }catch (Exception ex){
+
+        }finally {
+
+            db.close();
+        }
     }
 
     public String getId() {

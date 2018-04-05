@@ -40,14 +40,22 @@ public class Answer {
 
     public void saveAnswer(Answer answer) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.ANSWER_KEY_ANSWER, answer.getAnswer());
-        values.put(Constants.ANSWER_KEY_QUESTION_ID, answer.getQuestionId());
+            ContentValues values = new ContentValues();
+            values.put(Constants.ANSWER_KEY_ID, answer.getId());
+            values.put(Constants.ANSWER_KEY_ANSWER, answer.getAnswer());
+            values.put(Constants.ANSWER_KEY_QUESTION_ID, answer.getQuestionId());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_ANSWER, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_ANSWER, null, values);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close(); // Closing database connection
+        }
     }
 
     public void editAnswer(int id) {
@@ -55,9 +63,17 @@ public class Answer {
 
     public void deleteAnswer(Answer answer) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_ANSWER, Constants.ANSWER_KEY_ID + " = ?",
-                new String[]{String.valueOf(answer.getId())});
-        db.close();
+        try {
+
+            db.delete(Constants.TABLE_ANSWER, Constants.ANSWER_KEY_ID + " = ?",
+                    new String[]{String.valueOf(answer.getId())});
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
 
     public void getQuestion(int id) {
@@ -65,8 +81,14 @@ public class Answer {
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.execSQL("DELETE FROM " + Constants.TABLE_ANSWER);
-        db.close();
+        try{
+
+            db.execSQL("DELETE FROM " + Constants.TABLE_ANSWER);
+        }catch (Exception ex){
+
+        }finally {
+            db.close();
+        }
     }
 
     public List<String> getAnswersForQuestion(String questionId) {
@@ -76,6 +98,8 @@ public class Answer {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_ANSWER + " WHERE question_id = '" + questionId + "'";
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -84,8 +108,13 @@ public class Answer {
             } while (cursor.moveToNext());
         }
 
-        // close db connection
-        db.close();
+        }catch (Exception ex){
+
+        }finally {
+
+            // close db connection
+            db.close();
+        }
 
         // return notes list
         return answers;
@@ -99,6 +128,8 @@ public class Answer {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_ANSWER;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try{
+
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -113,8 +144,13 @@ public class Answer {
             } while (cursor.moveToNext());
         }
 
-        // close db connection
-        db.close();
+        }catch (Exception ex){
+
+        }finally {
+
+            // close db connection
+            db.close();
+        }
 
         // return notes list
         return answers;

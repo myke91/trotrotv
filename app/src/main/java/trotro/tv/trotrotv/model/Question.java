@@ -49,6 +49,7 @@ public class Question extends JSONObject {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
+            values.put(Constants.QUESTION_KEY_ID, question.getId());
             values.put(Constants.QUESTION_KEY_QUESTION, question.getQuestion());
             values.put(Constants.QUESTION_KEY_TYPE, question.getType());
             values.put(Constants.QUESTION_KEY_BRAND_NAME, question.getBrandName());

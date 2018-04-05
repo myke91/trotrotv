@@ -48,17 +48,25 @@ public class Brand extends JSONObject {
 
     public void saveBrand(Brand brand) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
+        try {
 
-        ContentValues values = new ContentValues();
-        values.put(Constants.BRAND_KEY_NAME, brand.getBrandName());
-        values.put(Constants.BRAND_KEY_LOCATION, brand.getLocation());
-        values.put(Constants.BRAND_KEY_CONTACT_PERSON, brand.getContactPerson());
-        values.put(Constants.BRAND_KEY_CONTACT_NUMBER, brand.getContactNumber());
-        values.put(Constants.BRAND_KEY_EMAIL, brand.getEmail());
+            ContentValues values = new ContentValues();
+            values.put(Constants.BRAND_KEY_ID, brand.getId());
+            values.put(Constants.BRAND_KEY_NAME, brand.getBrandName());
+            values.put(Constants.BRAND_KEY_LOCATION, brand.getLocation());
+            values.put(Constants.BRAND_KEY_CONTACT_PERSON, brand.getContactPerson());
+            values.put(Constants.BRAND_KEY_CONTACT_NUMBER, brand.getContactNumber());
+            values.put(Constants.BRAND_KEY_EMAIL, brand.getEmail());
 
-        // Inserting Row
-        db.insert(Constants.TABLE_BRAND, null, values);
-        db.close(); // Closing database connection
+            // Inserting Row
+            db.insert(Constants.TABLE_BRAND, null, values);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close(); // Closing database connection
+        }
     }
 
     public void editBrand(int id) {
@@ -66,9 +74,17 @@ public class Brand extends JSONObject {
 
     public void deleteBrand(Brand brand) {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.delete(Constants.TABLE_BRAND, Constants.BRAND_KEY_ID + " = ?",
-                new String[]{String.valueOf(brand.getId())});
-        db.close();
+        try {
+
+            db.delete(Constants.TABLE_BRAND, Constants.BRAND_KEY_ID + " = ?",
+                    new String[]{String.valueOf(brand.getId())});
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
 
     public void getBrand(int id) {
@@ -76,9 +92,18 @@ public class Brand extends JSONObject {
 
     public void clearData() {
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        db.execSQL("DELETE FROM "+Constants.TABLE_BRAND);
-        db.close();
+        try {
+
+            db.execSQL("DELETE FROM " + Constants.TABLE_BRAND);
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            db.close();
+        }
     }
+
     public List<Brand> getAllBrands() {
         List<Brand> brands = new ArrayList<>();
 
@@ -86,24 +111,31 @@ public class Brand extends JSONObject {
         String selectQuery = "SELECT  * FROM " + Constants.TABLE_BRAND;
 
         SQLiteDatabase db = mDbHandler.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        try {
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Brand brand = new Brand();
-                brand.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
-                brand.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_NAME)));
-                brand.setLocation(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_LOCATION)));
-                brand.setContactPerson(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_CONTACT_PERSON)));
-                brand.setContactNumber(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_CONTACT_NUMBER)));
+            Cursor cursor = db.rawQuery(selectQuery, null);
 
-                brands.add(brand);
-            } while (cursor.moveToNext());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Brand brand = new Brand();
+                    brand.setId(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_ID)));
+                    brand.setBrandName(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_NAME)));
+                    brand.setLocation(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_LOCATION)));
+                    brand.setContactPerson(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_CONTACT_PERSON)));
+                    brand.setContactNumber(cursor.getString(cursor.getColumnIndex(Constants.BRAND_KEY_CONTACT_NUMBER)));
+
+                    brands.add(brand);
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            // close db connection
+            db.close();
         }
-
-        // close db connection
-        db.close();
 
         // return notes list
         return brands;

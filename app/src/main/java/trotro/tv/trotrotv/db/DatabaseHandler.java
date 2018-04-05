@@ -20,7 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_BRAND_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_BRAND + "("
-                + Constants.BRAND_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.BRAND_KEY_ID + " INTEGER, "
                 + Constants.BRAND_KEY_NAME + " TEXT, "
                 + Constants.BRAND_KEY_LOCATION + " TEXT, "
                 + Constants.BRAND_KEY_CONTACT_PERSON + " TEXT, "
@@ -38,7 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Constants.REPORT_KEY_COMMENTS + " TEXT)";
 
         String CREATE_STATION_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_STATION + "("
-                + Constants.STATION_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.STATION_KEY_ID + " INTEGER, "
                 + Constants.STATION_KEY_NAME + " TEXT, "
                 + Constants.STATION_KEY_LOCATION + " TEXT )";
 
@@ -55,23 +55,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + Constants.SURVEY_KEY_RESPONDENT_EMAIL + " TEXT )";
 
         String CREATE_VEHICLE_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_VEHICLE + "("
-                + Constants.VEHICLE_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.VEHICLE_KEY_ID + " INTEGER, "
                 + Constants.VEHICLE_KEY_STATION_NAME + " TEXT, "
                 + Constants.VEHICLE_KEY_VEHICLE_NUMBER + " TEXT)";
 
         String CREATE_QUESTION_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_QUESTION + "("
-                + Constants.QUESTION_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.QUESTION_KEY_ID + " INTEGER, "
                 + Constants.QUESTION_KEY_QUESTION + " TEXT, "
                 + Constants.QUESTION_KEY_TYPE + " TEXT, "
                 + Constants.QUESTION_KEY_BRAND_NAME + " TEXT)";
 
         String CREATE_ACCESS_CODE_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_ACCESS_CODE + "("
-                + Constants.ACCESS_CODE_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.ACCESS_CODE_KEY_ID + " INTEGER, "
                 + Constants.ACCESS_CODE_KEY_USERNAME + " TEXT, "
                 + Constants.ACCESS_CODE_KEY_CODE + " TEXT )";
 
         String CREATE_ANSWER_TABLE = "CREATE TABLE IF NOT EXISTS  " + Constants.TABLE_ANSWER + "("
-                + Constants.ANSWER_KEY_ID + " INTEGER PRIMARY KEY, "
+                + Constants.ANSWER_KEY_ID + " INTEGER, "
                 + Constants.ANSWER_KEY_ANSWER + " TEXT, "
                 + Constants.ANSWER_KEY_QUESTION_ID + " TEXT )";
 
