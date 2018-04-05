@@ -6,44 +6,6 @@
               android:orientation="vertical"
               tools:context="trotro.tv.trotrotv.FieldReportFragment">
 
-    <TextView
-        android:id="@+id/page_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="STATIONS"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="35sp"/>
-
-    <ListView
-        android:id="@+id/list_stations"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="5dp"/>
-
-    <ListView
-        android:id="@+id/list_vehicles"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/vehicle_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="15dp"
-        android:padding="20dp"
-        android:text="VEHICLE NUMBER"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:visibility="gone"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -53,34 +15,82 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/form_question"
+            <TextView
+                android:id="@+id/page_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-            </LinearLayout>
+                android:gravity="center_horizontal"
+                android:text="STATIONS"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="35sp"/>
 
-            <EditText
-                android:id="@+id/additionalCommentText"
+            <ListView
+                android:id="@+id/list_stations"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Additional Comments"
-                android:lines="5"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"/>
+
+            <ListView
+                android:id="@+id/list_vehicles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
                 android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/vehicle_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp"
+                android:padding="20dp"
+                android:text="VEHICLE NUMBER"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:visibility="gone"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/form_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/additionalCommentText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Additional Comments"
+                        android:lines="5"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+            </ScrollView>
+
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="SAVE"
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
-
-
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="SAVE"
-        android:visibility="gone"/>
-
 
 </LinearLayout>
