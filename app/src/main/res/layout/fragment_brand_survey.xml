@@ -1,13 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:orientation="vertical"
               tools:context="trotro.tv.trotrotv.BrandSurveyFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,12 +22,12 @@
                 android:text="BRAND SURVEY"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textSize="35sp"/>
+                android:textSize="20sp"/>
 
             <ListView
                 android:id="@+id/list_brands"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="400dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"/>
 
@@ -41,65 +41,51 @@
                 android:text="BRAND NAME"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textSize="20dp"
+                android:textSize="13sp"
                 android:visibility="gone"/>
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/form_question"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+            </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
+                android:id="@+id/respondent_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/respondentName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:hint="Respondent Name"/>
 
-                    <LinearLayout
-                        android:id="@+id/form_question"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                    </LinearLayout>
+                <EditText
+                    android:id="@+id/respondentTelNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respondent Tel. Number"/>
 
-                    <LinearLayout
-                        android:id="@+id/respondent_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <EditText
-                            android:id="@+id/respondentName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Respondent Name"/>
-
-                        <EditText
-                            android:id="@+id/respondentTelNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Respondent Tel. Number"/>
-
-                        <EditText
-                            android:id="@+id/respondentEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Respondent E-Mail"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </ScrollView>
-
+                <EditText
+                    android:id="@+id/respondentEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respondent E-Mail"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:text="SAVE"
                 android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

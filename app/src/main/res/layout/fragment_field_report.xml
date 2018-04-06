@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
+              android:layout_height="wrap_content"
               android:orientation="vertical"
               tools:context="trotro.tv.trotrotv.FieldReportFragment">
 
@@ -23,7 +22,7 @@
                 android:text="STATIONS"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textSize="35sp"/>
+                android:textSize="20sp"/>
 
             <ListView
                 android:id="@+id/list_stations"
@@ -50,37 +49,25 @@
                 android:text="VEHICLE NUMBER"
                 android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:visibility="gone"/>
 
-            <ScrollView
+
+            <LinearLayout
+                android:id="@+id/form_question"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/form_question"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/additionalCommentText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Additional Comments"
-                        android:lines="5"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
-            </ScrollView>
-
+            <EditText
+                android:id="@+id/additionalCommentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Additional Comments"
+                android:lines="5"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/button_save"
